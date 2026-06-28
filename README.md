@@ -45,45 +45,75 @@ The goal is to build a small but well-structured backend system that can be pres
 * Store books and authors in normalized relational tables.
 * Support books with one or more authors.
 * Support authors associated with multiple books.
-* Search books by title, description and ISBN.
-* Rank search results by relevance.
-* Query books by author.
-* Provide a clean foundation for future API and architecture improvements.
+* Define search use cases and repository contracts with hexagonal ports.
+* Validate search queries at application service level.
+* Provide a clean foundation for REST and persistence adapters.
 
 ---
 
 ## System Architecture
 
-The application follows a simple backend-oriented architecture where external book data is ingested into PostgreSQL and then exposed through a Spring Boot REST API.
+The application is implemented using **Hexagonal Architecture (Ports and Adapters)** to keep business rules independent from frameworks and infrastructure details.
+
+Core domain logic lives in the center (`domain` + `application`), while technical concerns such as persistence are implemented as adapters in `infrastructure`.
+
+### Package Structure
+
+```text
+src/main/java/com/h2
+├── App.java
+├── DbImporter.java
+│
+├── domain
+│   └── model
+│       ├── Book.java
+│       └── Author.java
+│
+├── application
+│   ├── port
+│   │   ├── in
+│   │   │   └── SearchBooksUseCase.java
+│   │   └── out
+│   │       └── BookRepositoryPort.java
+│   │       └── AuthorRepositoryPort.java
+│   └── service
+│       └── SearchBookService.java
+│
+└── infrastructure
+    └── persistance
+        └── entity
+            └── BookJpaEntity.java
+```
 
 ```mermaid
 flowchart LR
-    CSV[Remote CSV Source] --> Importer[CSV Data Importer]
+    Client[REST Client] --> InPort[SearchBooksUseCase\nInput Port]
+    InPort --> AppService[SearchBookService\nApplication Service]
+    AppService --> OutPort[BookRepositoryPort\nOutput Port]
+    AppService --> AuthorOutPort[AuthorRepositoryPort\nOutput Port]
+    OutPort -. planned adapter .-> Adapter[PostgresBookRepositoryAdapter]
+    AuthorOutPort -. planned adapter .-> AuthorAdapter[PostgresAuthorRepositoryAdapter]
+    Adapter -. planned .-> JpaRepo[BookJpaRepository]
+    Adapter -. planned .-> Mapper[BookPersistenceMapper]
+    JpaRepo -. planned .-> DB[(PostgreSQL)]
 
-    Importer --> DB[(PostgreSQL Database)]
-
-    Client[REST Client / Postman / Frontend] --> API[Spring Boot REST API]
-
-    API --> Service[Application Service]
-    Service --> Repository[Repository / Persistence Adapter]
-    Repository --> DB
-
-    DB --> FTS[PostgreSQL Full-Text Search]
+    Domain[Domain Model\nBook / Author] -. used by .-> AppService
+    Entity[BookJpaEntity] -. early persistence model .-> DB
 ```
 
 ### Architecture Description
 
 The system is composed of the following main components:
 
-| Component              | Responsibility                                                        |
-| ---------------------- | --------------------------------------------------------------------- |
-| Remote CSV Source      | Provides the initial book dataset.                                    |
-| CSV Data Importer      | Downloads, parses and inserts CSV records into the database.          |
-| PostgreSQL Database    | Stores books, authors and their relationships.                        |
-| Full-Text Search       | Enables efficient text-based search using `tsvector` and GIN indexes. |
-| Spring Boot REST API   | Exposes endpoints for searching and retrieving books.                 |
-| Repository Layer       | Handles database access and query execution.                          |
-| REST Client / Frontend | Consumes the API.                                                     |
+| Component | Responsibility |
+| --------- | -------------- |
+| Domain (`domain.model`) | Represents core business entities (`Book`, `Author`) without framework dependencies. |
+| Input Port (`application.port.in`) | Defines use cases exposed to the outside world (`SearchBooksUseCase`). |
+| Application Service (`application.service`) | Orchestrates use case execution and validation (`SearchBookService`). |
+| Output Ports (`application.port.out`) | Defines persistence contracts (`BookRepositoryPort`, `AuthorRepositoryPort`). |
+| Persistence Layer (current status) | `BookJpaEntity` exists as an initial persistence model; adapters/repositories are pending implementation. |
+| Import Utility (`DbImporter`) | Downloads CSV, parses records and inserts books/authors relationships into PostgreSQL. |
+| PostgreSQL + FTS | Stores data and executes full-text search (`tsvector`, `tsquery`, ranking). |
 
 ---
 
@@ -301,7 +331,7 @@ The current scope focuses on:
 * Database schema design.
 * CSV data ingestion.
 * Full-text search configuration.
-* Initial backend architecture.
+* Hexagonal architecture implementation (ports and adapters).
 * SQL queries for search and relationships.
 * Professional documentation.
 
@@ -311,12 +341,12 @@ The current scope focuses on:
 
 Future improvements may include:
 
-* REST endpoints for books and authors.
-* Hexagonal architecture package structure.
-* DTOs and mappers.
+* Implement persistence adapters and Spring Data repositories for output ports.
+* Complete JPA entities and mappers for domain-to-persistence conversion.
+* Expose REST endpoints for books and authors.
+* Add DTOs and request/response mappers.
 * OpenAPI / Swagger documentation.
 * Flyway or Liquibase migrations.
-* Docker Compose for PostgreSQL.
 * Pagination and sorting.
 * Unit tests with JUnit and Mockito.
 * Integration tests with Testcontainers.
