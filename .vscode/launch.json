@@ -1,0 +1,21 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "DbImporter",
+            "request": "launch",
+            "mainClass": "com.h2.DbImporter",
+            "projectName": "book-search"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-App<book-search>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.h2.App",
+            "projectName": "book-search",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}
