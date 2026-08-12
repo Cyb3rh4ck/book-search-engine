@@ -1,2 +1,15 @@
-com\h2\HelloLController.class
+com\h2\infrastructure\adapter\out\persistance\PostgresBookSearchAdapter.class
+com\h2\DbImporter.class
+com\h2\infrastructure\config\ApplicationConfiguration.class
+com\h2\application\port\in\SearchBooksUseCase.class
+com\h2\infrastructure\adapter\in\web\BookSearchResponse.class
+com\h2\application\port\out\BookSearchPort.class
+com\h2\infrastructure\adapter\out\persistance\SpringDataBookRepository.class
+com\h2\infrastructure\adapter\out\persistance\BookSearchProjection.class
+com\h2\infrastructure\adapter\out\persistance\BookJpaEntity.class
+com\h2\domain\model\Author.class
+com\h2\domain\model\Book.class
+com\h2\domain\model\SearchResult.class
 com\h2\App.class
+com\h2\infrastructure\adapter\in\web\BookSearchController.class
+com\h2\application\service\SearchBooksService.class

@@ -1,2 +1,15 @@
 X:\eLearning\ws-book-search-engine\book-search\src\main\java\com\h2\App.java
-X:\eLearning\ws-book-search-engine\book-search\src\main\java\com\h2\HelloLController.java
+X:\eLearning\ws-book-search-engine\book-search\src\main\java\com\h2\application\port\in\SearchBooksUseCase.java
+X:\eLearning\ws-book-search-engine\book-search\src\main\java\com\h2\application\port\out\BookSearchPort.java
+X:\eLearning\ws-book-search-engine\book-search\src\main\java\com\h2\application\service\SearchBooksService.java
+X:\eLearning\ws-book-search-engine\book-search\src\main\java\com\h2\DbImporter.java
+X:\eLearning\ws-book-search-engine\book-search\src\main\java\com\h2\domain\model\Author.java
+X:\eLearning\ws-book-search-engine\book-search\src\main\java\com\h2\domain\model\Book.java
+X:\eLearning\ws-book-search-engine\book-search\src\main\java\com\h2\domain\model\SearchResult.java
+X:\eLearning\ws-book-search-engine\book-search\src\main\java\com\h2\infrastructure\adapter\in\web\BookSearchController.java
+X:\eLearning\ws-book-search-engine\book-search\src\main\java\com\h2\infrastructure\adapter\in\web\BookSearchResponse.java
+X:\eLearning\ws-book-search-engine\book-search\src\main\java\com\h2\infrastructure\adapter\out\persistance\BookJpaEntity.java
+X:\eLearning\ws-book-search-engine\book-search\src\main\java\com\h2\infrastructure\adapter\out\persistance\BookSearchProjection.java
+X:\eLearning\ws-book-search-engine\book-search\src\main\java\com\h2\infrastructure\adapter\out\persistance\PostgresBookSearchAdapter.java
+X:\eLearning\ws-book-search-engine\book-search\src\main\java\com\h2\infrastructure\adapter\out\persistance\SpringDataBookRepository.java
+X:\eLearning\ws-book-search-engine\book-search\src\main\java\com\h2\infrastructure\config\ApplicationConfiguration.java
