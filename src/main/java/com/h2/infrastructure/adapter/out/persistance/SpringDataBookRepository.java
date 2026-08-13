@@ -26,11 +26,11 @@ public interface SpringDataBookRepository extends JpaRepository<BookJpaEntity, L
                 b.price AS price,
                 ts_rank(
                     b.search_vector,
-                    websearch_to_tsquery('english', :query)
+                    plainto_tsquery('english', :query)
                 ) AS rank
             FROM books b
             WHERE b.search_vector @@
-                  websearch_to_tsquery('english', :query)
+                  plainto_tsquery('english', :query)
             ORDER BY rank DESC
             LIMIT 50
             """, nativeQuery = true)
