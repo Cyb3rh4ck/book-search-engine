@@ -29,10 +29,23 @@ public class DbImporter {
     private static final String CSV_URL =
             "https://gist.githubusercontent.com/hhimanshu/d55d17b51e0a46a37b739d0f3d3e3c74/raw/5b9027cf7b1641546c1948caffeaa44129b7db63/books.csv";
 
-    private static final String DB_URL = "jdbc:postgresql://localhost:5432/library";
-    private static final String DB_USER = "admin";
-    private static final String DB_PASSWORD = "admin123";
+    private static final String DB_URL =
+            System.getenv().getOrDefault(
+                    "DB_URL",
+                    "jdbc:postgresql://localhost:5432/library"
+            );
 
+    private static final String DB_USER =
+            System.getenv().getOrDefault(
+                    "DB_USERNAME",
+                    "admin"
+            );
+
+    private static final String DB_PASSWORD =
+            System.getenv().getOrDefault(
+                    "DB_PASSWORD",
+                    ""
+            );
     public static void main(String[] args) {
         try {
             System.out.println("Starting data ingestion...");

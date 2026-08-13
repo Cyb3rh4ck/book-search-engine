@@ -32,3 +32,15 @@ CREATE TABLE book_authors (
     author_id INT REFERENCES authors(author_id) ON DELETE CASCADE,
     PRIMARY KEY (book_id, author_id)
 );
+
+--- Así books.search_vector se genera automáticamente
+ALTER TABLE books
+ADD COLUMN search_vector tsvector
+GENERATED ALWAYS AS (
+    setweight(to_tsvector('english', coalesce(title, '')), 'A') ||
+    setweight(to_tsvector('english', coalesce(description, '')), 'B')
+) STORED;
+
+CREATE INDEX idx_books_search_vector
+ON books
+USING GIN (search_vector);
