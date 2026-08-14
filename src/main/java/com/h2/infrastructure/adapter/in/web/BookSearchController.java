@@ -34,4 +34,10 @@ public class BookSearchController {
                 .toList();
 
     }
+
+    @GetMapping("/version")
+    public String version() {
+        return "2.0";
+    }
+
 }
